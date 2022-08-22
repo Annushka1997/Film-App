@@ -1,34 +1,112 @@
 "use strict";
+const headerImage = document.querySelector("header img");
+const adv = document.querySelectorAll("#main_promo .mp");
+const filmsBlock = document.querySelector("#films");
+const form = document.querySelector("#add");
 
-// Առաջին հարցի պատասխանը
+headerImage.src = "img/bg2.jpg";
+headerImage.alt = "Hitman's Wife's Bodyguard";
+adv.forEach(adv => adv.remove());
+document.title = headerImage.alt;
 
-let image = document.querySelector("#headerImage");
-image.src = "./img/bg2.jpg";
+const _DB = {
+	movies: [
+		"Logan", "Spider-Man", "The Seven Samurai",
+		"Bonnie and Clyde", "Reservoir Dogs", "Doctor Zhivago",
+		"The Deer Hunter", "Rocky", "Crid"
+	]
+};
+let newD;
+const favoriteDB =  [];
+const check = document.querySelector('input[type="checkbox"]');
 
-// Երկրորդ հարցի պատասխանը
+form.addEventListener("submit", (e) => {
+	e.preventDefault();
+	let val = e.target.firstElementChild.value.trim();
+	let valCopy = val;
+	if (val !== "") {
+		if (check.checked) {
+			favoriteDB.push(val);
+			_DB.movies.push(val);
+			console.log(`this film <${valCopy}> added to favorite`);
+		} else {
+			_DB.movies.push(val);
+		}
+	}
+	setSort(_DB.movies);
+	createFilmsList(_DB.movies, filmsBlock);
+	e.target.reset();
+});
 
-document.querySelector(".main_promo").remove();
-
-// Երրորդ հարցի պատասխանը
-
-if (document.querySelector("#headerImage").src == "http://127.0.0.1:5500/film/img/bg2.jpg") {
-    document.title = "Hitman's Wife's Bodyguard";
-} else {
-    document.title = "Gemini Man";
+function setSort (arr) {
+	arr.sort();
 }
+function createFilmsList (films, parent) {
+	parent.innerHTML = "";
+	setSort(films);
+		films.forEach((film, index) => { if (index < 20 ) {
+		if (favoriteDB.indexOf(film) !== -1) {
+		parent.innerHTML += `
+			<p> 
+			<font color="blue">  
+			${index + 1}. ${film.length >= 21 ? `${film.slice(0, 21)}...` : film}
+			</font> 
+				<span data-rm>&#128465;</span>
+			</p>
+		`;
+	} else {
+		parent.innerHTML += `
+			<p> 
+			${index + 1}. ${film.length >= 21 ? `${film.slice(0, 21)}...` : film}
+				<span data-rm>&#128465;</span>
+			</p>
+		`;
+	}
+	} else {
+		let randomFilm = function (arr) {
+			let newArray;
+			for (let i = 20; i>0; i--) {
+				let tmp = arr[i];
+				let rnd = Math.floor(Math.random() * (i+1));
+				arr[i] = arr [rnd];
+				arr[rnd] = tmp;
+				newArray = arr;
+				console.log(newArray);
+			}
+			parent.innerHTML = "";
+			newArray.forEach((film,index) => { if (index < 20) {
+				if (favoriteDB.indexOf(film) !== -1) {
+					parent.innerHTML += `
+						<p> 
+						<font color="blue">  
+						${index + 1}. ${film.length >= 21 ? `${film.slice(0, 21)}...` : film}
+						</font> 
+							<span data-rm>&#128465;</span>
+						</p>
+					`;
+				} else {
+					parent.innerHTML += `
+						<p> 
+						${index + 1}. ${film.length >= 21 ? `${film.slice(0, 21)}...` : film}
+							<span data-rm>&#128465;</span>
+						</p>
+					`;
+				}
+			}
+			});
+	};
+	randomFilm(_DB.movies);
+	}
+	});
 
-// Լրացուցիչ առաջադրանք
-let myTitle = document.title;
-let t = 0;
-
-function myNewTitle () {
-    document.title = myTitle.substring(0,t);
-    if (t == myTitle.length) {
-        t=0;
-        setTimeout("myNewTitle()",3500);
-    } else {
-        t++; 
-        setTimeout("myNewTitle()",300);
-    }
+	document.querySelectorAll("[data-rm]").forEach((btn, i) => {
+		btn.addEventListener("click", () => {
+			btn.parentElement.remove();
+			_DB.movies.splice(i, 1);
+			createFilmsList(films, parent);
+		});
+	});
 }
-myNewTitle();
+createFilmsList(_DB.movies, filmsBlock);
+
+
