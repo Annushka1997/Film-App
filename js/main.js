@@ -24,7 +24,7 @@ form.addEventListener("submit", (e) => {
 	e.preventDefault();
 	let val = e.target.firstElementChild.value.trim();
 	let valCopy = val;
-	if (val !== "") {
+	if (val !== "" && _DB.movies.indexOf(val) == -1) {
 		if (check.checked) {
 			favoriteDB.push(val);
 			_DB.movies.push(val);
