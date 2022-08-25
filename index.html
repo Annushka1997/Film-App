@@ -23,8 +23,8 @@
 				</a>
 			</div>
 			<div class="login">
-				<a href="#">Sign in</a>
-				<a href="#">Sign up</a>
+				<a href="#" data-in>Sign in</a>
+				<a href="#" data-up>Sign up</a>
 			</div>
 		</div>
 	</div>
@@ -35,8 +35,13 @@
 					FILM APP
 				</a>
 			</div>
-
-			<ul id="menu">
+			<a href="#" class="toggle_button">
+				<span class="bar"></span>
+				<span class="bar"></span>
+				<span class="bar"></span>
+			</a>
+			<div class="navbar-links">
+				<ul id="menu">
 				<li><a href="#">Comedy</a></li>
 				<li><a href="#">Fantasy</a></li>
 				<li><a href="#">Sport</a></li>
@@ -44,6 +49,8 @@
 				<li><a href="#">Adventure</a></li>
 				<li><a href="#">Action</a></li>
 			</ul>
+			</div>
+			
 		</div>
 	</nav>
 	<header>
@@ -80,6 +87,17 @@
 			</div>
 		</div>
 	</main>
+
+	<div class="modal_wrapper"  data-in-modal>
+		<form>
+			<input type="text" placeholder="username" name="username" id="username">
+			<input type="password" placeholder="password" name="password" id="password">
+			<button>Sign In</button>
+		</form>
+	</div>
+	<div class="first second third btn danger success error" id="some">
+		<button>PLEASE CLICK ME</button>
+	</div>
 
 	<script src="js/main.js"></script>
 </body>
